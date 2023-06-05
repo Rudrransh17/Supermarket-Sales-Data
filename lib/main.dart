@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supermarket_sales_data/home.dart';
 import 'login.dart';
 
 void main() {
@@ -8,6 +9,7 @@ void main() {
 class MyApp extends StatelessWidget {
   final Map<String, WidgetBuilder> routes = {
     '/login': (context) => LoginPage(),
+    '/home' : (context) => HomeScreen(),
     // Add more routes here
   };
 

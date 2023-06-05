@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'credential_textfield.dart';
 
+// ignore_for_file: prefer_const_constructors
+
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -71,6 +72,10 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Container(
                       height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       child: Center(
                         child: Text(
                           'Login',
@@ -82,8 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      decoration: BoxDecoration(
-                          color: Colors.blue, borderRadius: BorderRadius.circular(10.0),),
                     ),
                   ),
                   SizedBox(height: 10.0),

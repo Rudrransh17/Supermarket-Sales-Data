@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+// ignore_for_file: prefer_const_constructors
+
 class CredentialTextfield extends StatelessWidget {
   final String text;
   final Icon icon;
   final TextEditingController controller;
 
-  CredentialTextfield({required this.text, required this.icon,required this.controller});
+  const CredentialTextfield({super.key, required this.text, required this.icon,required this.controller});
 
   @override
   Widget build(BuildContext context) {

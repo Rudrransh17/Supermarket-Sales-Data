@@ -1,0 +1,8 @@
+{
+    "appId": "supermarket_sales_data-pktns",
+    "appUrl": "https://realm.mongodb.com/groups/647d8cf19ec05065dc28f33c/apps/647eebf9236c93de6bb9f1cc",
+    "baseUrl": "https://realm.mongodb.com",
+    "clientApiBaseUrl": "https://asia-south1.gcp.realm.mongodb.com",
+    "dataApiBaseUrl": "https://asia-south1.gcp.data.mongodb-api.com",
+    "dataSourceName": "mongodb-atlas"
+}

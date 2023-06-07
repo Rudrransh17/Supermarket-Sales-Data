@@ -12,6 +12,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   Item(
     ObjectId id,
     String summary,
+    String todo,
     String ownerId, {
     bool isComplete = false,
   }) {
@@ -23,6 +24,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, '_id', id);
     RealmObjectBase.set(this, 'isComplete', isComplete);
     RealmObjectBase.set(this, 'summary', summary);
+    RealmObjectBase.set(this, 'todo', todo);
     RealmObjectBase.set(this, 'owner_id', ownerId);
   }
 
@@ -42,6 +44,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   String get summary => RealmObjectBase.get<String>(this, 'summary') as String;
   @override
   set summary(String value) => RealmObjectBase.set(this, 'summary', value);
+
+  @override
+  String get todo => RealmObjectBase.get<String>(this, 'todo') as String;
+  @override
+  set todo(String value) => RealmObjectBase.set(this, 'todo', value);
 
   @override
   String get ownerId => RealmObjectBase.get<String>(this, 'owner_id') as String;
@@ -64,6 +71,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
           mapTo: '_id', primaryKey: true),
       SchemaProperty('isComplete', RealmPropertyType.bool),
       SchemaProperty('summary', RealmPropertyType.string),
+      SchemaProperty('todo', RealmPropertyType.string),
       SchemaProperty('ownerId', RealmPropertyType.string, mapTo: 'owner_id'),
     ]);
   }

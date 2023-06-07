@@ -140,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text(_errorMessage ?? "",
                           style: TextStyle(
                             color: Colors.redAccent,
+                            fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center),
                     ],
@@ -168,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         await appServices.registerUserEmailPassword(email, password);
       }
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (err) {
       setState(() {
         _errorMessage = err.toString();

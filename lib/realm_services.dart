@@ -15,7 +15,7 @@ class RealmServices with ChangeNotifier {
   App app;
 
   RealmServices(this.app) {
-    if (app.currentUser != null || currentUser != app.currentUser) {
+    if (app.currentUser != null) {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
       showAll = (realm.subscriptions.findByName(queryAllName) != null);
@@ -70,12 +70,12 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
-  void createItem(String summary, bool isComplete) {
-    final newItem =
-        Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
-    realm.write<Item>(() => realm.add<Item>(newItem));
-    notifyListeners();
-  }
+  // void createItem(String summary, bool isComplete) {
+  //   final newItem =
+  //       Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
+  //   realm.write<Item>(() => realm.add<Item>(newItem));
+  //   notifyListeners();
+  // }
 
   void deleteItem(Item item) {
     realm.write(() => realm.delete(item));

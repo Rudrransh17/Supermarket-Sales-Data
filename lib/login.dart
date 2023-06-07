@@ -172,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacementNamed(context, '/home');
     } catch (err) {
       setState(() {
-        _errorMessage = err.toString();
+        print(err.toString());
+        _errorMessage = "Wrong Email or Password. Type Correct credentials or signup instead";
       });
     }
   }

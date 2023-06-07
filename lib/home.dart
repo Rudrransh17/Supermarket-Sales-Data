@@ -48,7 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ? Container()
         : Scaffold(
             appBar: AppBar(
-              title: Text('Supermarket Sales Data Visualizer'),
+              centerTitle: true,
+              toolbarHeight: 80,
+              titleTextStyle: const TextStyle(
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+              ),
+              title: const Text(
+                'Supermarket Sales Data Visualizer',
+              ),
               actions: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.logout),

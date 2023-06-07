@@ -18,35 +18,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late List<BarData> data;
-  late List<BarData> barData = [
-    BarData('CHN', 12),
-    BarData('GER', 15),
-    BarData('RUS', 30),
-    BarData('BRZ', 6.4),
-    BarData('IND', 14)
-  ];
-
-  final List<PieData> pieData = [
-    PieData('David', 25),
-    PieData('Steve', 38),
-    PieData('Jack', 34),
-    PieData('Others', 52)
-  ];
+  late List<PieData> pieData;
+  TooltipBehavior? _tooltipBehavior;
+  late String barChartX = "Branch";
+  late String barChartY = "Total";
+  late String PieChartX = "Branch";
+  late String PieChartY = "Total";
 
   @override
   void initState() {
     fetchData();
+    _tooltipBehavior =
+        TooltipBehavior(enable: true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    data = getBarData("Branch", "Total");
-    double maxVal = data[0].y;
-
+    pieData = getPieData(PieChartX, PieChartY);
+    data = getBarData(barChartX, barChartY);
+    double maxValBar = data[0].y;
     for (int i = 1; i < data.length; i++) {
-      if (data[i].y > maxVal) {
-        maxVal = data[i].y;
+      if (data[i].y > maxValBar) {
+        maxValBar = data[i].y;
       }
     }
     final realmServices = Provider.of<RealmServices>(context);
@@ -67,12 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                   child: Container(
-                    height: 200,
-                    width: 200,
                     child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(),
-                      primaryYAxis:
-                          NumericAxis(minimum: 0, maximum: maxVal*1.2, interval: maxVal/10),
+                      enableAxisAnimation: true,
+                      tooltipBehavior: _tooltipBehavior,
+                      title: ChartTitle(text: "${barChartX} vs ${barChartY}"),
+                      primaryXAxis:
+                          CategoryAxis(title: AxisTitle(text: barChartX)),
+                      primaryYAxis: NumericAxis(
+                        minimum: 0,
+                        maximum: maxValBar * 1.2,
+                        interval: maxValBar / 10,
+                        title: AxisTitle(text: barChartY),
+                      ),
                       series: <ChartSeries<BarData, String>>[
                         ColumnSeries<BarData, String>(
                           dataSource: data,
@@ -80,6 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           yValueMapper: (BarData data, _) => data.y,
                           name: 'Gold',
                           color: Color.fromRGBO(8, 142, 255, 1),
+                          dataLabelSettings: const DataLabelSettings(
+                            isVisible: true,
+                            textStyle: TextStyle(fontSize: 10),
+                          ),
                         ),
                       ],
                     ),
@@ -87,16 +91,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    child: SfCircularChart(
-                        series: <CircularSeries>[
-                          // Render pie chart
-                          PieSeries<PieData, String>(
-                              dataSource: pieData,
-                              xValueMapper: (PieData data, _) => data.x,
-                              yValueMapper: (PieData data, _) => data.y
-                          )
-                        ]
-                    ),
+                    child: SfCircularChart(series: <CircularSeries>[
+                      // Render pie chart
+                      PieSeries<PieData, String>(
+                          dataSource: pieData,
+                          dataLabelMapper: (PieData pieData, _) => pieData.x as String,
+                          dataLabelSettings: const DataLabelSettings(isVisible: true),
+                          xValueMapper: (PieData pieData, _) => pieData.x,
+                          yValueMapper: (PieData pieData, _) => pieData.y)
+                    ]),
                   ),
                 ),
                 Expanded(
@@ -104,8 +107,142 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.blue,
                     child: Column(
                       children: [
-                        Text('Edit Bar Chart'),
-                        Text('Edit Pie Chart')
+                        Expanded(child: Container()),
+                        Text('Edit Bar Chart',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('On X Axis:'),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            DropdownButton<String>(
+                              value: barChartX,
+                              onChanged: (String? newValue) {
+                                // Handle dropdown value change
+                                setState(() {
+                                  barChartX = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                'Branch',
+                                'City',
+                                'Customer type',
+                                'Gender',
+                                'Product line',
+                                'Payment',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('On Y Axis:'),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            DropdownButton<String>(
+                              value: barChartY,
+                              onChanged: (String? newValue) {
+                                // Handle dropdown value change
+                                setState(() {
+                                  barChartY = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                'Total',
+                                'Quantity',
+                                'cogs',
+                                'gross income',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                        Expanded(child: Container()),
+                        Text('Edit Pie Chart',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Category: '),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            DropdownButton<String>(
+                              value: PieChartX,
+                              onChanged: (String? newValue) {
+                                // Handle dropdown value change
+                                setState(() {
+                                  PieChartX = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                'Branch',
+                                'City',
+                                'Customer type',
+                                'Gender',
+                                'Product line',
+                                'Payment',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Distribution: '),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            DropdownButton<String>(
+                              value: PieChartY,
+                              onChanged: (String? newValue) {
+                                // Handle dropdown value change
+                                setState(() {
+                                  PieChartY = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                'Total',
+                                'Quantity',
+                                'cogs',
+                                'gross income',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                        Expanded(child: Container()),
+                        Expanded(child: Container()),
                       ],
                     ),
                   ),
@@ -121,19 +258,6 @@ class _HomeScreenState extends State<HomeScreen> {
     await realmServices.close();
     Navigator.pushReplacementNamed(context, '/login');
   }
-}
-
-// class BarData {
-//   BarData(this.x, this.y);
-//
-//   final String x;
-//   final double y;
-// }
-
-class PieData {
-  PieData(this.x, this.y);
-  final String x;
-  final double y;
 }
 
 Container waitingIndicator() {

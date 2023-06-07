@@ -41,9 +41,6 @@ void fetchData() async {
 
   if (response.statusCode == 200) {
     responseData = jsonDecode(response.body);
-    for (var document in responseData['documents']) {
-      print(document);
-    }
   } else {
     print('Error: ${response.statusCode}');
   }
@@ -53,9 +50,8 @@ List<BarData> getBarData(String x_field, String y_field) {
   Map<String, double> map = {};
 
   for (var document in responseData['documents']) {
-    print(document);
     String category = document[x_field];
-    double value = document[y_field];
+    double value = double.parse(document[y_field].toStringAsFixed(2));
 
     // Check if the branch exists in the branchTotals map
     if (map.containsKey(category)) {
@@ -64,11 +60,33 @@ List<BarData> getBarData(String x_field, String y_field) {
       map[category] = value; // Create a new entry for the branch with the total value
     }
   }
-  print("Sum done");
   print(map);
   // Convert the branchTotals map into a list of BarData objects
   List<BarData> result = map.entries.map((entry) {
     return BarData(entry.key, entry.value);
+  }).toList();
+
+  return result;
+}
+
+List<PieData> getPieData(String x_field, String y_field) {
+  Map<String, double> map = {};
+
+  for (var document in responseData['documents']) {
+    String category = document[x_field];
+    double value = double.parse(document[y_field].toStringAsFixed(2));
+
+    // Check if the branch exists in the branchTotals map
+    if (map.containsKey(category)) {
+      map[category] = map[category]! + value; // Add the total value to the existing branch total
+    } else {
+      map[category] = value; // Create a new entry for the branch with the total value
+    }
+  }
+  print(map);
+  // Convert the branchTotals map into a list of BarData objects
+  List<PieData> result = map.entries.map((entry) {
+    return PieData(entry.key, entry.value);
   }).toList();
 
   return result;

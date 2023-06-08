@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 
 void main() async {
+  fetchData();
   WidgetsFlutterBinding.ensureInitialized();
   final realmConfig = json.decode(await rootBundle.loadString('assets/config/app_config.json'));
   String appId = realmConfig['appId'];

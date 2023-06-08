@@ -27,7 +27,7 @@ void fetchData() async {
     "sort": {
       "completedAt": 1
     },
-    "limit": 100
+    "limit": 1000
   });
 
   final headers = {

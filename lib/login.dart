@@ -14,7 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isLogin = true;
   String? _errorMessage;
 
@@ -52,101 +51,100 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Center(
         child: Container(
-                width: 500,
-                height: 400,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.0),
+          width: 500,
+          height: 400,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _isLogin ? 'Welcome Back' : 'Create Account',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _isLogin ?
-                        'Welcome Back'
-                        : 'Create Account',
+                SizedBox(height: 20.0),
+                CredentialTextfield(
+                  obscureText: false,
+                  controller: _emailController,
+                  text: 'Email Address',
+                  icon: Icon(
+                    Icons.email_outlined,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                CredentialTextfield(
+                  obscureText: true,
+                  text: 'Password',
+                  icon: Icon(
+                    Icons.lock_outline_rounded,
+                    color: Colors.grey,
+                  ),
+                  controller: _passwordController,
+                ),
+                SizedBox(height: 20.0),
+                GestureDetector(
+                  onTap: () {
+                    _logInOrSignUpUser(context, _emailController.text,
+                        _passwordController.text);
+                  },
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        _isLogin ? 'Login' : 'Signup',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
+                          color: Colors.blue,
+                          fontSize: 17.5,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 20.0),
-                      CredentialTextfield(
-                        controller: _emailController,
-                        text: 'Email Address',
-                        icon: Icon(
-                          Icons.email_outlined,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      CredentialTextfield(
-                          text: 'Password',
-                          icon: Icon(
-                            Icons.lock_outline_rounded,
-                            color: Colors.grey,
-                          ),
-                          controller: _passwordController),
-                      SizedBox(height: 20.0),
-                      GestureDetector(
-                        onTap: () {
-                          _logInOrSignUpUser(context,
-                              _emailController.text, _passwordController.text);
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              _isLogin ?
-                              'Login'
-                              : 'Signup',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 17.5,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isLogin = !_isLogin;
-                          });
-                        },
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            _isLogin ?
-                            "Don't have an account? Create Account"
-                            : "Already have an account? Sign-in",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Text(_errorMessage ?? "",
-                          style: TextStyle(
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(height: 10.0),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isLogin = !_isLogin;
+                    });
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      _isLogin
+                          ? "Don't have an account? Create Account"
+                          : "Already have an account? Sign-in",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(_errorMessage ?? "",
+                    style: TextStyle(
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -160,7 +158,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _logInOrSignUpUser(BuildContext context, String email, String password) async {
+  void _logInOrSignUpUser(
+      BuildContext context, String email, String password) async {
     final appServices = Provider.of<AppServices>(context, listen: false);
     clearError();
     try {
@@ -173,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
     } catch (err) {
       setState(() {
         print(err.toString());
-        _errorMessage = "Wrong Email or Password. Type Correct credentials or signup instead";
+        _errorMessage =
+            "Wrong Email or Password. Type Correct credentials or signup instead";
       });
     }
   }

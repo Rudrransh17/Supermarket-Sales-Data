@@ -6,12 +6,14 @@ class CredentialTextfield extends StatelessWidget {
   final String text;
   final Icon icon;
   final TextEditingController controller;
+  final bool obscureText;
 
-  const CredentialTextfield({super.key, required this.text, required this.icon,required this.controller});
+  const CredentialTextfield({super.key, required this.text, required this.icon,required this.controller, required this.obscureText});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
         hintText: text,

@@ -8,7 +8,7 @@ class CredentialTextfield extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
 
-  const CredentialTextfield({super.key, required this.text, required this.icon,required this.controller, required this.obscureText});
+  CredentialTextfield({super.key, required this.text, required this.icon,required this.controller, required this.obscureText});
 
   @override
   Widget build(BuildContext context) {
